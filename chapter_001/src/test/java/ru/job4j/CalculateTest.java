@@ -5,6 +5,7 @@ import java.io.PrintStream;
 import org.junit.Test;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+
 /**
 * Test.
 *
@@ -26,11 +27,10 @@ public class CalculateTest {
          out.toString(),
          is(
             String.format(
-                   "Hello, world%s",
-                    System.getProperty("line.separator")
+                "Hello, world%s",
+                System.getProperty("line.separator")
             )
         )
     );
 	}
 }
-	
