@@ -21,4 +21,17 @@ public class Max {
 		this.result = first > second ? first : second;
 		return this.result;
 	}
+/**
+* Метод принимает три значения.
+* И при помощи предыдущего метода выявляет наибольшее.
+* @param first Первое значение.
+* @param second Второе значение.
+* @param third Третье значение.
+* @return Наибольшее из трех.
+*/
+	public int max(int first, int second, int third) {
+		int tmp = this.max(first, second); // tmp - для хранения промежуточного значения
+		this.result = this.max(tmp, third);
+		return this.result;
+	}
 }

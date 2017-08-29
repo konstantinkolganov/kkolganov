@@ -20,4 +20,13 @@ public class MaxTest {
 		int result = maxim.max(1, 2);
 		assertThat(result, is(2));
 	}
+/**
+* Тест на сравнение max с тремя числами.
+*/
+	@Test
+    public void whenSecondLessFirstAndThird() {
+		Max maxim = new Max();
+		int result = maxim.max(3, 1, 4);
+		assertThat(result, is(4));
+	}
 }
