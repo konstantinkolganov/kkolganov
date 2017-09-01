@@ -79,6 +79,6 @@ public class Triangle {
 * @return False, если длина хотя бы одной стороны равна нулю.
 */
     public boolean exist(double ab, double bc, double ca) {
-		return (ab > 0) && (bc > 0) && (ca > 0) ? true : false;
+		return (ab + bc > ca) && (ab + ca > bc) && (bc + ca > ab) ? true : false;
 	}
 }
