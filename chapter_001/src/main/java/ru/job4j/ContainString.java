@@ -2,30 +2,26 @@ package ru.job4j;
 
 public class ContainString {
 	
-	private boolean result;
-	
 	public boolean contains(String origin, String sub) {
 		
-		char[] originBuf = new char[origin.length()];
-		char[] subBuf = new char[sub.length()];
+		boolean result = true;
 		
-		origin.getChars(0, origin.length(), originBuf, 0);
-		sub.getChars(0, sub.length(), subBuf, 0);
+		char[] originBuf = origin.toCharArray();
+		char[] subBuf = sub.toCharArray();
 		
-		for (int j = 0; j < origin.length(); j++) {
+		boolean[] bool = new boolean[sub.length()];
+		
+		for (int j = 0; j < originBuf.length; j++) {
 			if (originBuf[j] == subBuf[0]) {
-				boolean[] bool = new boolean[sub.length()];
 				for (int i = 0; i < bool.length; i++) {
 					bool[i] = (originBuf[j + i] == subBuf[i]);
+					result &= bool[i];
 				}
-				for (int a = 0; a < bool.length; a++) {
-					this.result |= bool[a];
-				}
-				if (this.result == true) {
+				if (result == true) {
 					break;
 				}
 			}
 		}
-		return this.result;
+		return result;
 	}
 }
