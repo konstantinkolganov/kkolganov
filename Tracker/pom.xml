@@ -1,0 +1,40 @@
+<project>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>ru.job4j</groupId>
+	<artifactId>Tracker</artifactId>
+	<version>2.0</version>
+	<name>Tracker</name>
+	<packaging>jar</packaging>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<finalName>Tracker</finalName>
+							<transformers>
+								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<mainClass>ru.job4j.start.StartUI</mainClass>
+								</transformer>
+							</transformers>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<parent>
+		<groupId>ru.job4j</groupId>
+		<artifactId>kkolganov</artifactId>
+		<version>2.0</version>
+	</parent>
+</project>
