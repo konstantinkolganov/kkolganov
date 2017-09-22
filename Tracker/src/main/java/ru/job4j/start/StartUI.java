@@ -19,18 +19,42 @@ public class StartUI {
 	private static final String FINDBYID = "4"; /**Поиск заявки по номеру Id.*/
 	private static final String FINDBYNAME = "5"; /**Показ всех заявок с указанным именем.*/
 	private static final String EXIT = "6"; /**Выход из программы.*/
+	private Input input;	/**Для хранения ссылки на объект класса Console- или StubInput.*/
+	private Tracker tracker;	/**Для хранения ссылки на объект класса Tracker.*/
+/**
+* Конструктор StartUI.
+* @param input Input.
+* @param tracker Tracker.
+*/
+	public StartUI(Tracker tracker, Input input) {
+		this.tracker = tracker;
+		this.input = input;
+	}
 /**
 * Метод main.
 * Точка входа в программу.
 * @param args args.
 */
 	public static void main(String[] args) {
+		// Создаем объект класса ConsoleInput,
+		// который будет возвращать введенные пользователем данные
+		ConsoleInput consinput = new ConsoleInput();
+		// Создаем объект класса Tracker для хранения заявок
+		Tracker tracker = new Tracker();
+		// Создаем объект класса StartUI
+		StartUI start = new StartUI(tracker, consinput);
+		// Запуск программы на выполнение
+		start.init();
+	}
+/**
+* Метод init(). Каркас программы.
+* Реализует диалог с пользователем.
+*/
+	public void init() {
 		String answer = null;	// Переменная для хранения результата ввода из консоли
 		boolean check = true;	// Для проверки условия в цикле while
 		int def = 0;			// Переменная, используемая в условном операторе if для проверки
 								// соответствия значения введенного пользователем ключа заданному диапазану значений.
-		Tracker tracker = new Tracker();
-		ConsoleInput input = new ConsoleInput();
 		System.out.print("\r\nHello, dear User!\r\n");
 		System.out.println("Welcome to the application processing program.");
 		System.out.println("The following actions are available to you:");
@@ -45,22 +69,22 @@ public class StartUI {
 			}
 			switch (answer) {
 				case ADD:
-					createItem(tracker, input);
+					this.createItem(tracker, input);
 					break;
 				case SHOW:
-					showAllItems(tracker);
+					this.showAllItems(tracker);
 					break;
 				case EDIT:
-					editItem(tracker, input);
+					this.editItem(tracker, input);
 					break;
 				case DELETE:
-					deleteItem(tracker, input);
+					this.deleteItem(tracker, input);
 					break;
 				case FINDBYID:
-					findItemById(tracker, input);
+					this.findItemById(tracker, input);
 					break;
 				case FINDBYNAME:
-					findItemsByName(tracker, input);
+					this.findItemsByName(tracker, input);
 					break;
 				case EXIT:
 					check = false;
@@ -74,10 +98,10 @@ public class StartUI {
 /**
 * Метод void createItem.
 * Создание новой заявки.
-* @param tracker Объект класса Tracker.
-* @param input Объект класса ConsoleInput.
+* @param tracker Ссылка на объект класса Tracker.
+* @param input Ссылка на интерфейс Input.
 */
-	public static void createItem(Tracker tracker, ConsoleInput input) {
+	public void createItem(Tracker tracker, Input input) {
 		String name = input.ask("Please, enter the name of Item: ");
 		String descrip = input.ask("OK! Now, enter a description: ");
 		Item newItem = tracker.add(new Item(name, descrip, 123L));
@@ -90,9 +114,9 @@ public class StartUI {
 /**
 * Метод void showAllItems.
 * Вывод на экран всех заявок.
-* @param tracker Объект класса Tracker.
+* @param tracker Ссылка на объект класса Tracker.
 */
-	public static void showAllItems(Tracker tracker) {
+	public void showAllItems(Tracker tracker) {
 		if (tracker.findAll() == null) {
 			System.out.print("\r\nYou have not created none Items.\r\n");
 		} else {
@@ -110,10 +134,10 @@ public class StartUI {
 /**
 * Метод void editItem.
 * Удаление заявки.
-* @param tracker Объект класса Tracker.
-* @param input Объект класса ConsoleInput.
+* @param tracker Ссылка на объект класса Tracker.
+* @param input Ссылка на интерфейс input.
 */
-	public static void editItem(Tracker tracker, ConsoleInput input) {
+	public void editItem(Tracker tracker, Input input) {
 		if (tracker.findAll() == null) {
 			System.out.print("\r\nYou have not created none Items.\r\n");
 		} else {
@@ -147,10 +171,10 @@ public class StartUI {
 /**
 * Метод void DeleteItem.
 * Удаление заявки.
-* @param tracker Объект класса Tracker.
-* @param input Объект класса ConsoleInput.
+* @param tracker Ссылка на объект класса Tracker.
+* @param input Ссылка на интерфейс Input.
 */
-	public static void deleteItem(Tracker tracker, ConsoleInput input) {
+	public void deleteItem(Tracker tracker, Input input) {
 		if (tracker.findAll() == null) {
 			System.out.print("\r\nYou have not created none Items.\r\n");
 		} else {
@@ -174,10 +198,10 @@ public class StartUI {
 /**
 * Метод void findItemById.
 * Поиск и отображение заявки по номеру Id.
-* @param tracker Объект класса Tracker.
-* @param input Объект класса ConsoleInput.
+* @param tracker Ссылка на объект класса Tracker.
+* @param input Ссылка на интерфейс Input.
 */
-	public static void findItemById(Tracker tracker, ConsoleInput input) {
+	public void findItemById(Tracker tracker, Input input) {
 		if (tracker.findAll() == null) {
 			System.out.print("\r\nYou have not created none Items.\r\n");
 		} else {
@@ -199,10 +223,10 @@ public class StartUI {
 /**
 * Метод void findItemsByName.
 * Поиск и отображение заявок по имени.
-* @param tracker Объект класса Tracker.
-* @param input Объект класса ConsoleInput.
+* @param tracker Ссылка на объект класса Tracker.
+* @param input Ссылка на интерфейс Input.
 */
-	public static void findItemsByName(Tracker tracker, ConsoleInput input) {
+	public void findItemsByName(Tracker tracker, Input input) {
 		if (tracker.findAll() == null) {
 			System.out.print("\r\nYou have not created none Items.\r\n");
 		} else {

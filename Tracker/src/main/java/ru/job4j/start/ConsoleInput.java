@@ -7,7 +7,7 @@ import java.util.Scanner;
 * @since 20.09.2017
 * @version 2.0
 */
-public class ConsoleInput {
+public class ConsoleInput implements Input {
 /**
 * Класс ConsoleInput.
 */
