@@ -13,8 +13,15 @@ public interface Input {
 */
 /**
 * Метод ask.
-* @param question Вопрос пользователю(для класса ConsoleInput).
+* @param question Вопрос пользователю.
 * @return Введенные данные с консоли или выбор меню во время теста.
 */
 	String ask(String question);
+/**
+* Метод ask.
+* @param question Вопрос пользователю.
+* @param range Массив ключей меню.
+* @return Введенные данные с консоли или выбор меню во время теста.
+*/
+	int ask(String question, int[] range);
 }

@@ -27,6 +27,28 @@ public class StubInput implements Input {
 * @return Выбор элемента меню.
 */
 	public String ask(String question) {
-		return answers[position++];
+		return this.answers[this.position++];
+	}
+/**
+* Метод ask.
+* @param question Вопрос пользователю.
+* @param range Диапазон ключей.
+* @return Ключ меню.
+*/
+	public int ask(String question, int[] range) {
+		int key = -1;
+		int num = Integer.parseInt(this.ask(question));
+		boolean exist = true;
+		for (int value : range) {
+			if (num == value) {
+				exist = false;
+				key = num;
+				break;
+			}
+		}
+		if (exist) {
+			throw new MenuOutException("Invalid input! Enter key from menu.");
+		}
+		return key;
 	}
 }

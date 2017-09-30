@@ -28,12 +28,12 @@ public class StartUI {
 * @param args args.
 */
 	public static void main(String[] args) {
-		// Создаем объект класса ConsoleInput,
-		// который будет возвращать введенные пользователем данные
-		Input input = new ConsoleInput();
 		// Создаем объект класса Tracker для хранения заявок
 		Tracker tracker = new Tracker();
-		// Создаем объект класса StartUI
+		// Создаем объект класса ValidateInput,
+		// который будет возвращать ввод пользователя
+		Input input = new ValidateInput();
+		// Создаем объект класса StartUI и передаем объекты tracker и input
 		StartUI start = new StartUI(tracker, input);
 		// Запуск программы на выполнение
 		start.init();
@@ -41,15 +41,14 @@ public class StartUI {
 /**
 * Метод init(). Каркас программы.
 * Реализует диалог с пользователем.
+* @throws MenuOutException Неверный выбор меню.
 */
 	public void init() {
-		String answer;
 		MenuTracker menu = new MenuTracker(this.tracker, this.input);
 		menu.fillAction();
 		do {
 			menu.show();
-			answer = this.input.ask("Please, enter the number from 0 to 5 or \"7\" for Exit: ");
-			menu.select(answer);
-		} while (!"7".equals(answer));
+			menu.select(this.input.ask("Please, enter the key from 0 to 5: ", menu.getAcrange()));
+		} while (!"7".equals(this.input.ask("Exit? Enter \"7\": ")));
 	}
 }
