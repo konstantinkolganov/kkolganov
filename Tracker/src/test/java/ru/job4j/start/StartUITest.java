@@ -24,10 +24,13 @@ public class StartUITest {
 	public void whenUserAddItemThenTrackerHasNewItemWithSameName() {
 		// Создаем новый объект класса Tracker
 		Tracker tracker = new Tracker();
-		// Создаем новый объект класса StubInput и вносим последовательность действий
-		Input input = new StubInput(new String[]{"0", "test name", "desc", "6"});
-		// Создаем объект StartUI и вызываем метод init()
-		new StartUI(tracker, input).init();
+		// Создаем объект класса StubValidateInput,
+		// который будет возвращать ввод пользователя.
+		Input input = new StubValidateInput(new String[]{"0", "test name", "desc", "7"});
+		// Создаем объект класса StartUI и передаем объекты tracker и input
+		StartUI start = new StartUI(tracker, input);
+		// Запуск программы на выполнение
+		start.init();
 		// Проверяем, что нулевой элемент массива содержит имя, введенное при эмуляции
 		assertThat(tracker.findAll()[0].getName(), is("test name"));
 	}
@@ -42,10 +45,13 @@ public class StartUITest {
 		Tracker tracker = new Tracker();
 		// Добаляем заявку в трекер вручную
 		Item item = tracker.add(new Item("Test", "desc", 123L));
-		// Задаем последовательность выбора виртуального пользователя
-		Input input = new StubInput(new String[]{"2", item.getId(), "testUpdate", "descUpdate", "6"});
-		// Создаем StartUI и вызываем метод init()
-		new StartUI(tracker, input).init();
+		// Создаем объект класса StubValidateInput,
+		// который будет возвращать корректный ключ меню
+		Input input = new StubValidateInput(new String[]{"2", item.getId(), "testUpdate", "descUpdate", "7"});
+		// Создаем объект класса StartUI и передаем объекты tracker и input
+		StartUI start = new StartUI(tracker, input);
+		// Запуск программы на выполнение
+		start.init();
 		// Проверяем, что нулевой элемент массива содержит имя, введенное при эмуляции
 		assertThat(tracker.findById(item.getId()).getName(), is("testUpdate"));
 	}

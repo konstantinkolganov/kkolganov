@@ -25,8 +25,8 @@ package ru.job4j.start;
 * Возвращает уникальный ключ меню.
 * @return "0".
 */
-		public String key() {
-			return "0";
+		public int key() {
+			return 0;
 		}
 /**
 * Метод execute.
@@ -64,6 +64,7 @@ public class MenuTracker {
 	private Tracker tracker; /**Для хранения ссылки на объект класса Tracker.*/
 	private Input input;	/**Для хранения ссылки на объект класса Console- или StubInput.*/
 	private UserAction[] actions = new UserAction[6]; /**Массив действий.*/
+	private int[] acrange = new int[]{0, 1, 2, 3, 4, 5};
 /**
 * Конструктор MenuTracker.
 * @param tracker Tracker.
@@ -72,6 +73,14 @@ public class MenuTracker {
 	public MenuTracker(Tracker tracker, Input input) {
 		this.tracker = tracker;
 		this.input = input;
+	}
+/**
+* Метод getAcrange.
+* Возвращает массив с ключами.
+* @return Массив с ключами.
+*/
+	public int[] getAcrange() {
+		return this.acrange;
 	}
 /**
 * Метод fillAction().
@@ -90,13 +99,8 @@ public class MenuTracker {
 * Выполнение действия.
 * @param key Уникальный ключ меню.
 */
-	public void select(String key) {
-		for (UserAction action: this.actions) {
-			if (action != null && key.equals(action.key())) {
-				action.execute(this.tracker, this.input);
-				break;
-			}
-		}
+	public void select(int key) {
+		this.actions[key].execute(this.tracker, this.input);
 	}
 /**
 * Метод show.
@@ -120,8 +124,8 @@ public class MenuTracker {
 * Возвращает уникальный ключ меню.
 * @return "1".
 */
-		public String key() {
-			return "1";
+		public int key() {
+			return 1;
 		}
 /**
 * Метод execute.
@@ -164,8 +168,8 @@ public class MenuTracker {
 * Возвращает уникальный ключ меню.
 * @return "2".
 */
-		public String key() {
-			return "2";
+		public int key() {
+			return 2;
 		}
 /**
 * Метод execute.
@@ -225,8 +229,8 @@ public class MenuTracker {
 * Возвращает уникальный ключ меню.
 * @return "3".
 */
-		public String key() {
-			return "3";
+		public int key() {
+			return 3;
 		}
 /**
 * Метод execute.
@@ -276,8 +280,8 @@ public class MenuTracker {
 * Возвращает уникальный ключ меню.
 * @return "4".
 */
-		public String key() {
-			return "4";
+		public int key() {
+			return 4;
 		}
 /**
 * Метод execute.
@@ -326,8 +330,8 @@ public class MenuTracker {
 * Возвращает уникальный ключ меню.
 * @return "5".
 */
-		public String key() {
-			return "5";
+		public int key() {
+			return 5;
 		}
 /**
 * Метод execute.
