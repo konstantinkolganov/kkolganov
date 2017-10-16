@@ -12,6 +12,7 @@ public class Board {
 * Класс Board.
 */
 	private Cell[][] board = new Cell[8][8]; /**Массив ячеек, формирующий шахматную доску.*/
+	private Coordinate[][] coordCell = new Coordinate[8][8]; /**Массив координат.*/
 	private Figure[][] figure = new Figure[4][8]; /**Массив шахматных фигур.*/
 	private String[][] designCols = {{"0", "1", "2", "3", "4", "5", "6", "7"},
 									{"a", "b", "c", "d", "e", "f", "g", "h"}}; /**Буквы по столбцам.*/
@@ -30,10 +31,11 @@ public class Board {
 	boolean move(Cell source, Cell dist) throws ImpossibleMoveException, OccupiedWayException, FigureNotFoundException {
 		boolean check = true;
 		Cell[] cell = null;
-		if (source.getFigure() != null) {
-			cell = source.getFigure().way(dist);
+		Figure fig = this.findFig(source);
+		if (fig != null) {
+			cell = fig.way(dist);
 			for (Cell var : cell) {
-				if (var.getFigure() != null) {
+				if (this.findFig(var) != null) {
 					throw new OccupiedWayException("On the way there is a figure!");
 				}
 			}
@@ -88,19 +90,62 @@ public class Board {
 			for (int j = 0; j < 8; j++) {
 				if (i % 2 == 0) {
 					if (j % 2 == 0) {
-						this.board[i][j] = new Cell(new Coordinate(j, i), "White");
+						this.board[i][j] = new Cell("White");
 					} else {
-						this.board[i][j] = new Cell(new Coordinate(j, i), "Black");
+						this.board[i][j] = new Cell("Black");
 					}
 				} else {
 					if (j % 2 == 0) {
-						this.board[i][j] = new Cell(new Coordinate(j, i), "Black");
+						this.board[i][j] = new Cell("Black");
 					} else {
-						this.board[i][j] = new Cell(new Coordinate(j, i), "White");
+						this.board[i][j] = new Cell("White");
 					}
 				}
 			}
 		}
+	}
+/**
+* Метод createCoordinate.
+* Создание массива координат ячеек.
+*/
+	public void createCoordinate() {
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				this.coordCell[i][j] = new Coordinate(i, j, this.board[i][j]);
+			}
+		}
+	}
+/**
+* Метод findFig. Поиск фигуры по ячейке.
+* @param cell Ячейка.
+* @return Фигура.
+*/
+	public Figure findFig(Cell cell) {
+		Figure fig = null;
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 8; j++) {
+				if (cell.equals(this.figure[i][j].getPosition())) {
+					fig = this.figure[i][j];
+				}
+			}
+		}
+		return fig;
+	}
+/**
+* Метод findCoord. Получение координаты ячейки.
+* @param cell Ячейка.
+* @return Координата.
+*/
+	public Coordinate findCoord(Cell cell) {
+		Coordinate coordinate = null;
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if (cell.equals(this.coordCell[i][j].getCell())) {
+					coordinate = this.coordCell[i][j];
+				}
+			}
+		}
+		return coordinate;
 	}
 /**
 * Метод createFigure.
@@ -108,54 +153,53 @@ public class Board {
 * По правилам шахмат.
 */
 	public void createFigure() {
-		String color;
 		for (int i = 0; i < 4; i++) {
 			switch (i) {
 				case 0:
 					for (int j = 0; j < 8; j++) {
 						if (j == 0 || j == 7) {
-							this.createShallop(this.figure[i][j], this.board[i][j], "Black");
+							this.createShallop(i, j, "Black");
 						}
 						if (j == 1 || j == 6) {
-							this.createHorse(this.figure[i][j], this.board[i][j], "Black");
+							this.createHorse(i, j, "Black");
 						}
 						if (j == 2 || j == 5) {
-							this.createElephant(this.figure[i][j], this.board[i][j], "Black");
+							this.createElephant(i, j, "Black");
 						}
 						if (j == 3) {
-							this.createQueen(this.figure[i][j], this.board[i][j], "Black");
+							this.createQueen(i, j, "Black");
 						}
 						if (j == 4) {
-							this.createKing(this.figure[i][j], this.board[i][j], "Black");
+							this.createKing(i, j, "Black");
 						}
 					}
 					break;
 				case 1:
 					for (int j = 0; j < 8; j++) {
-						this.createPawn(this.figure[i][j], this.board[i][j], "Black");
+						this.createPawn(i, j, "Black");
 					}
 					break;
 				case 2:
 					for (int j = 0; j < 8; j++) {
-						this.createPawn(this.figure[i][j], this.board[6][j], "White");
+						this.createPawn(i, j, "White");
 					}
 					break;
 				case 3:
 					for (int j = 0; j < 8; j++) {
 						if (j == 0 || j == 7) {
-							this.createShallop(this.figure[i][j], this.board[7][j], "White");
+							this.createShallop(i, j, "White");
 						}
 						if (j == 1 || j == 6) {
-							this.createHorse(this.figure[i][j], this.board[7][j], "White");
+							this.createHorse(i, j, "White");
 						}
 						if (j == 2 || j == 5) {
-							this.createElephant(this.figure[i][j], this.board[7][j], "White");
+							this.createElephant(i, j, "White");
 						}
 						if (j == 3) {
-							this.createQueen(this.figure[i][j], this.board[7][j], "White");
+							this.createQueen(i, j, "White");
 						}
 						if (j == 4) {
-							this.createKing(this.figure[i][j], this.board[7][j], "White");
+							this.createKing(i, j, "White");
 						}
 					}
 					break;
@@ -167,13 +211,13 @@ public class Board {
 /**
 * Метод createPawn.
 * Создает Пешку и кладет ее в массив фигур и соответствующую ячейку доски.
-* @param figure Элемент массива figure.
-* @param cell Элемент массива ячеек доски board.
+* @param i Инициализатор первого измерения массива.
+* @param j Инициализатор второго измерения массива.
 * @param color Цвет фигуры.
 */
-	public void createPawn(Figure figure, Cell cell, String color) {
+	public void createPawn(int i, int j, String color) {
 		if ("White".equals(color)) {
-			figure = new Figure("Pawn", "White", cell) {
+			this.figure[i][j] = new Figure("Pawn", "White", this.board[6][j]) {
 /**
 * Метод way.
 * Определяет возможность передвижения фигуры к заданной ячейке.
@@ -183,10 +227,10 @@ public class Board {
 */
 				public Cell[] way(Cell dist) throws ImpossibleMoveException {
 					Cell[] cell = null;
-					int actX = getPosition().getCoordinate().getX();
-					int actY = getPosition().getCoordinate().getY();
-					int distX = dist.getCoordinate().getX();
-					int distY = dist.getCoordinate().getY();
+					int actX = findCoord(this.getPosition()).getX();
+					int actY = findCoord(this.getPosition()).getY();
+					int distX = findCoord(dist).getX();
+					int distY = findCoord(dist).getY();
 					int diffX = distX - actX;
 					int diffY = distY - actY;
 					if (diffX == 0 && diffY == -1) {
@@ -198,10 +242,9 @@ public class Board {
 					return cell;
 				}
 			};
-			cell.setFigure(figure);
 		}
 		if ("Black".equals(color)) {
-			figure = new Figure("Pawn", "Black", cell) {
+			this.figure[i][j] = new Figure("Pawn", "Black", this.board[i][j]) {
 /**
 * Метод way.
 * Определяет возможность передвижения фигуры к заданной ячейке.
@@ -211,10 +254,10 @@ public class Board {
 */
 				public Cell[] way(Cell dist) throws ImpossibleMoveException {
 					Cell[] cell = null;
-					int actX = getPosition().getCoordinate().getX();
-					int actY = getPosition().getCoordinate().getY();
-					int distX = dist.getCoordinate().getX();
-					int distY = dist.getCoordinate().getY();
+					int actX = findCoord(this.getPosition()).getX();
+					int actY = findCoord(this.getPosition()).getY();
+					int distX = findCoord(dist).getX();
+					int distY = findCoord(dist).getY();
 					int diffX = distX - actX;
 					int diffY = distY - actY;
 					if (diffX == 0 && diffY == 1) {
@@ -226,19 +269,18 @@ public class Board {
 					return cell;
 				}
 			};
-			cell.setFigure(figure);
 		}
 	}
 /**
 * Метод createShallop.
 * Создает Ладью и кладет ее в массив фигур и соответствующую ячейку доски.
-* @param figure Элемент массива figure.
-* @param cell Элемент массива ячеек доски board.
+* @param i Инициализатор первого измерения массива.
+* @param j Инициализатор второго измерения массива.
 * @param color Цвет фигуры.
 */
-	public void createShallop(Figure figure, Cell cell, String color) {
+	public void createShallop(int i, int j, String color) {
 		if ("White".equals(color)) {
-			figure = new Figure("Shallop", "White", cell) {
+			this.figure[i][j] = new Figure("Shallop", "White", this.board[7][j]) {
 /**
 * Метод way.
 * Определяет возможность передвижения фигуры к заданной ячейке.
@@ -248,10 +290,10 @@ public class Board {
 */
 				public Cell[] way(Cell dist) throws ImpossibleMoveException {
 					Cell[] cell = null;
-					int actX = getPosition().getCoordinate().getX();
-					int actY = getPosition().getCoordinate().getY();
-					int distX = dist.getCoordinate().getX();
-					int distY = dist.getCoordinate().getY();
+					int actX = findCoord(this.getPosition()).getX();
+					int actY = findCoord(this.getPosition()).getY();
+					int distX = findCoord(dist).getX();
+					int distY = findCoord(dist).getY();
 					int diffX = distX - actX;
 					int diffY = distY - actY;
 					int index = 0; // счетчик массива
@@ -288,10 +330,9 @@ public class Board {
 					return cell;
 				}
 			};
-			cell.setFigure(figure);
 		}
 		if ("Black".equals(color)) {
-			figure = new Figure("Shallop", "Black", cell) {
+			this.figure[i][j] = new Figure("Shallop", "Black", this.board[i][j]) {
 /**
 * Метод way.
 * Определяет возможность передвижения фигуры к заданной ячейке.
@@ -302,13 +343,13 @@ public class Board {
 				public Cell[] way(Cell dist) throws ImpossibleMoveException {
 					Cell[] cell = null;
 					// Координата X текущей ячейки
-					int actX = getPosition().getCoordinate().getX();
+					int actX = findCoord(this.getPosition()).getX();
 					// Координата Y текущей ячейки
-					int actY = getPosition().getCoordinate().getY();
+					int actY = findCoord(this.getPosition()).getY();
 					// Координата X ячейки назначения
-					int distX = dist.getCoordinate().getX();
+					int distX = findCoord(dist).getX();
 					// Координата Y ячейки назначения
-					int distY = dist.getCoordinate().getY();
+					int distY = findCoord(dist).getY();
 					// Разница координат X
 					int diffX = distX - actX;
 					// Разница координат Y
@@ -349,20 +390,18 @@ public class Board {
 					return cell;
 				}
 			};
-			// Добавляем фигуру в ячейку
-			cell.setFigure(figure);
 		}
 	}
 /**
 * Метод createHorse.
 * Создает Лошадь и кладет ее в массив фигур и соответствующую ячейку доски.
-* @param figure Элемент массива figure.
-* @param cell Элемент массива ячеек доски board.
+* @param i Инициализатор первого измерения массива.
+* @param j Инициализатор второго измерения массива.
 * @param color Цвет фигуры.
 */
-	public void createHorse(Figure figure, Cell cell, String color) {
+	public void createHorse(int i, int j, String color) {
 		if ("White".equals(color)) {
-			figure = new Figure("Horse", "White", cell) {
+			this.figure[i][j] = new Figure("Horse", "White", this.board[7][j]) {
 /**
 * Метод way.
 * Определяет возможность передвижения фигуры к заданной ячейке.
@@ -372,10 +411,10 @@ public class Board {
 */
 				public Cell[] way(Cell dist) throws ImpossibleMoveException {
 					Cell[] cell = null;
-					int actX = getPosition().getCoordinate().getX();
-					int actY = getPosition().getCoordinate().getY();
-					int distX = dist.getCoordinate().getX();
-					int distY = dist.getCoordinate().getY();
+					int actX = findCoord(this.getPosition()).getX();
+					int actY = findCoord(this.getPosition()).getY();
+					int distX = findCoord(dist).getX();
+					int distY = findCoord(dist).getY();
 					int diffX = distX - actX;
 					int diffY = distY - actY;
 					// Два вперед и один влево
@@ -400,10 +439,9 @@ public class Board {
 					return cell;
 				}
 			};
-			cell.setFigure(figure);
 		}
 		if ("Black".equals(color)) {
-			figure = new Figure("Horse", "Black", cell) {
+			this.figure[i][j] = new Figure("Horse", "Black", this.board[i][j]) {
 /**
 * Метод way.
 * Определяет возможность передвижения фигуры к заданной ячейке.
@@ -414,13 +452,13 @@ public class Board {
 				public Cell[] way(Cell dist) throws ImpossibleMoveException {
 					Cell[] cell = null;
 					// Координата X текущей ячейки
-					int actX = getPosition().getCoordinate().getX();
+					int actX = findCoord(this.getPosition()).getX();
 					// Координата Y текущей ячейки
-					int actY = getPosition().getCoordinate().getY();
+					int actY = findCoord(this.getPosition()).getY();
 					// Координата X ячейки назначения
-					int distX = dist.getCoordinate().getX();
+					int distX = findCoord(dist).getX();
 					// Координата Y ячейки назначения
-					int distY = dist.getCoordinate().getY();
+					int distY = findCoord(dist).getY();
 					// Разница координат X
 					int diffX = distX - actX;
 					// Разница координат Y
@@ -447,19 +485,18 @@ public class Board {
 					return cell;
 				}
 			};
-			cell.setFigure(figure);
 		}
 	}
 /**
 * Метод createElephant.
 * Создает Слона и кладет его в массив фигур и соответствующую ячейку доски.
-* @param figure Элемент массива figure.
-* @param cell Элемент массива ячеек доски board.
+* @param i Инициализатор первого измерения массива.
+* @param j Инициализатор второго измерения массива.
 * @param color Цвет фигуры.
 */
-	public void createElephant(Figure figure, Cell cell, String color) {
+	public void createElephant(int i, int j, String color) {
 		if ("White".equals(color)) {
-			figure = new Figure("Elephant", "White", cell) {
+			this.figure[i][j] = new Figure("Elephant", "White", this.board[7][j]) {
 				public Cell[] way(Cell dist) throws ImpossibleMoveException {
 /**
 * Метод way.
@@ -469,10 +506,10 @@ public class Board {
 * @throws ImposibleMoveException Исключение, если невозможно пройти к ячейке.
 */
 					Cell[] cell = null;
-					int actX = getPosition().getCoordinate().getX();
-					int actY = getPosition().getCoordinate().getY();
-					int distX = dist.getCoordinate().getX();
-					int distY = dist.getCoordinate().getY();
+					int actX = findCoord(this.getPosition()).getX();
+					int actY = findCoord(this.getPosition()).getY();
+					int distX = findCoord(dist).getX();
+					int distY = findCoord(dist).getY();
 					int diffX = distX - actX;
 					int diffY = distY - actY;
 					int index = 0;
@@ -501,10 +538,9 @@ public class Board {
 					return cell;
 				}
 			};
-			cell.setFigure(figure);
 		}
 		if ("Black".equals(color)) {
-			figure = new Figure("Elephant", "Black", cell) {
+			this.figure[i][j] = new Figure("Elephant", "Black", this.board[i][j]) {
 /**
 * Метод way.
 * Определяет возможность передвижения фигуры к заданной ячейке.
@@ -514,10 +550,10 @@ public class Board {
 */
 				public Cell[] way(Cell dist) throws ImpossibleMoveException {
 					Cell[] cell = null;
-					int actX = getPosition().getCoordinate().getX();
-					int actY = getPosition().getCoordinate().getY();
-					int distX = dist.getCoordinate().getX();
-					int distY = dist.getCoordinate().getY();
+					int actX = findCoord(this.getPosition()).getX();
+					int actY = findCoord(this.getPosition()).getY();
+					int distX = findCoord(dist).getX();
+					int distY = findCoord(dist).getY();
 					int diffX = distX - actX;
 					int diffY = distY - actY;
 					int index = 0;
@@ -548,19 +584,18 @@ public class Board {
 					return cell;
 				}
 			};
-			cell.setFigure(figure);
 		}
 	}
 /**
 * Метод createQueen.
 * Создает Ферзя и кладет его в массив фигур и соответствующую ячейку доски.
-* @param figure Элемент массива figure.
-* @param cell Элемент массива ячеек доски board.
+* @param i Инициализатор первого измерения массива.
+* @param j Инициализатор второго измерения массива.
 * @param color Цвет фигуры.
 */
-	public void createQueen(Figure figure, Cell cell, String color) {
+	public void createQueen(int i, int j, String color) {
 		if ("White".equals(color)) {
-			figure = new Figure("Queen", "White", cell) {
+			this.figure[i][j] = new Figure("Queen", "White", this.board[7][j]) {
 				public Cell[] way(Cell dist) throws ImpossibleMoveException {
 /**
 * Метод way Определяет возможность передвижения фигуры к заданной ячейке.
@@ -569,10 +604,10 @@ public class Board {
 * @throws ImposibleMoveException Исключение, если невозможно пройти к ячейке.
 */
 					Cell[] cell = null;
-					int actX = getPosition().getCoordinate().getX();
-					int actY = getPosition().getCoordinate().getY();
-					int distX = dist.getCoordinate().getX();
-					int distY = dist.getCoordinate().getY();
+					int actX = findCoord(this.getPosition()).getX();
+					int actY = findCoord(this.getPosition()).getY();
+					int distX = findCoord(dist).getX();
+					int distY = findCoord(dist).getY();
 					int diffX = distX - actX;
 					int diffY = distY - actY;
 					int index = 0;
@@ -630,10 +665,9 @@ public class Board {
 					return cell;
 				}
 			};
-			cell.setFigure(figure);
 		}
 		if ("Black".equals(color)) {
-			figure = new Figure("Queen", "Black", cell) {
+			this.figure[i][j] = new Figure("Queen", "Black", this.board[i][j]) {
 /**
 * Метод way Определяет возможность передвижения фигуры к заданной ячейке.
 * @param dist Текущая ячейка.
@@ -642,10 +676,10 @@ public class Board {
 */
 				public Cell[] way(Cell dist) throws ImpossibleMoveException {
 					Cell[] cell = null;
-					int actX = getPosition().getCoordinate().getX();
-					int actY = getPosition().getCoordinate().getY();
-					int distX = dist.getCoordinate().getX();
-					int distY = dist.getCoordinate().getY();
+					int actX = findCoord(this.getPosition()).getX();
+					int actY = findCoord(this.getPosition()).getY();
+					int distX = findCoord(dist).getX();
+					int distY = findCoord(dist).getY();
 					int diffX = distX - actX;
 					int diffY = distY - actY;
 					int index = 0;
@@ -703,19 +737,18 @@ public class Board {
 					return cell;
 				}
 			};
-			cell.setFigure(figure);
 		}
 	}
 /**
 * Метод createKing.
 * Создает Короля и кладет его в массив фигур и соответствующую ячейку доски.
-* @param figure Элемент массива figure.
-* @param cell Элемент массива ячеек доски board.
+* @param i Инициализатор первого измерения массива.
+* @param j Инициализатор второго измерения массива.
 * @param color Цвет фигуры.
 */
-	public void createKing(Figure figure, Cell cell, String color) {
+	public void createKing(int i, int j, String color) {
 		if ("White".equals(color)) {
-			figure = new Figure("King", "White", cell) {
+			this.figure[i][j] = new Figure("King", "White", this.board[7][j]) {
 				public Cell[] way(Cell dist) throws ImpossibleMoveException {
 /**
 * Метод way.
@@ -725,10 +758,10 @@ public class Board {
 * @throws ImposibleMoveException Исключение, если невозможно пройти к ячейке.
 */
 					Cell[] cell = null;
-					int actX = getPosition().getCoordinate().getX();
-					int actY = getPosition().getCoordinate().getY();
-					int distX = dist.getCoordinate().getX();
-					int distY = dist.getCoordinate().getY();
+					int actX = findCoord(this.getPosition()).getX();
+					int actY = findCoord(this.getPosition()).getY();
+					int distX = findCoord(dist).getX();
+					int distY = findCoord(dist).getY();
 					int diffX = distX - actX;
 					int diffY = distY - actY;
 					if (((diffY == -1 || diffY == 0) && (diffX == 1 || diffX == -1)) || (diffY == -1 && diffX == 0)) {
@@ -765,10 +798,9 @@ public class Board {
 					return cell;
 				}
 			};
-			cell.setFigure(figure);
 		}
 		if ("Black".equals(color)) {
-			figure = new Figure("King", "Black", cell) {
+			this.figure[i][j] = new Figure("King", "Black", this.board[i][j]) {
 /**
 * Метод way.
 * Определяет возможность передвижения фигуры к заданной ячейке.
@@ -778,10 +810,10 @@ public class Board {
 */
 				public Cell[] way(Cell dist) throws ImpossibleMoveException {
 					Cell[] cell = null;
-					int actX = getPosition().getCoordinate().getX();
-					int actY = getPosition().getCoordinate().getY();
-					int distX = dist.getCoordinate().getX();
-					int distY = dist.getCoordinate().getY();
+					int actX = findCoord(this.getPosition()).getX();
+					int actY = findCoord(this.getPosition()).getY();
+					int distX = findCoord(dist).getX();
+					int distY = findCoord(dist).getY();
 					int diffX = distX - actX;
 					int diffY = distY - actY;
 						if (((diffY == 1 || diffY == 0) && (diffX == 1 || diffX == -1)) || (diffY == 1 && diffX == 0)) {
@@ -818,7 +850,6 @@ public class Board {
 					return cell;
 				}
 			};
-			cell.setFigure(figure);
 		}
 	}
 }

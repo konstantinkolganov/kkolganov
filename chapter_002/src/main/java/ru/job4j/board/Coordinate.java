@@ -13,14 +13,17 @@ public class Coordinate {
 */
 	private int x; /**Горизонталь.*/
 	private int y; /**Вертикаль.*/
+	private Cell cell; /**Ячейка.*/
 /**
 * Конструктор класса.
-* @param x Положение ячейки по горизонтали.
-* @param y Положение ячейки по вертикали.
+* @param x Положение по горизонтали.
+* @param y Положение по вертикали.
+* @param cell Ячейка доски.
 */
-	public Coordinate(int x, int y) {
-		this.x = x;
+	public Coordinate(int y, int x, Cell cell) {
 		this.y = y;
+		this.x = x;
+		this.cell = cell;
 	}
 /**
 * Метод getX.
@@ -37,5 +40,12 @@ public class Coordinate {
 */
 	public int getY() {
 		return this.y;
+	}
+/**
+* Метод getCell. Возвращает ячейку.
+* @return ячейка.
+*/
+	public Cell getCell() {
+		return this.cell;
 	}
 }

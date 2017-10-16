@@ -31,9 +31,8 @@ public class Start {
 			Cell dist = this.board.translate(were);
 			boolean check = this.board.move(source, dist);
 			if (check) {
-				dist.setFigure(source.getFigure());
-				dist.getFigure().setPosition(dist);
-				source.setFigure(null);
+				Figure figure = this.board.findFig(source);
+				figure.clone(dist);
 			}
 		} catch (ImpossibleMoveException ime) {
 			System.out.println("Moving is impossible. Select another cell.");

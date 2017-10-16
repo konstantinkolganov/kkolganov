@@ -26,16 +26,6 @@ public abstract class Figure {
 		this.position = position;
 	}
 /**
-* Конструктор класса для создания копии объекта.
-* @param figure Объект класса Figure.
-* @param position Новая ячейка, где будет храниться фигура.
-*/
-	public Figure(Figure figure, Cell position) {
-		this.name = figure.name;
-		this.color = figure.color;
-		this.position = position;
-	}
-/**
 * Метод way.
 * Определяет возможность и путь прохождения фигуры к назначенной ячейке.
 * @param dist Ячейка назначения, куда следует пойти.
@@ -44,8 +34,15 @@ public abstract class Figure {
 */
 	abstract Cell[] way(Cell dist) throws ImpossibleMoveException;
 /**
+* Метод clone. Задает новое положение фигуры.
+* @param dist Новое месторасположение фигуры.
+*/
+	public void clone(Cell dist) {
+		this.position = dist;
+	}
+/**
 * Метод setPosition.
-* @param position Новое месторасположение фигуры.
+* @param position Новое значение position.
 */
 	public void setPosition(Cell position) {
 		this.position = position;
