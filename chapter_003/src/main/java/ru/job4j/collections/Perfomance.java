@@ -4,7 +4,7 @@ import java.util.*;
 /**
 * Класс Perfomance замеряет время вставки в коллекцию и время удаления случайных строк.
 * @author Konstantin Kolganov (kkolganov.92@gmail.com)
-* @since 31.10.2017
+* @since 01.11.2017
 * @version 2.0
 */
 
