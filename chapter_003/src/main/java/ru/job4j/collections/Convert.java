@@ -4,7 +4,7 @@ import java.util.*;
 /**
 * Класс Convert. Конвертация двумерного массива в ArrayList и наборот.
 * @author Konstantin Kolganov (kkolganov.92@gmail.com)
-* @since 31.10.2017
+* @since 01.11.2017
 * @version 2.0
 */
 
