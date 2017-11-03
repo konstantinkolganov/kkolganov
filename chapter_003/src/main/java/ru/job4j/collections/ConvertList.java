@@ -75,8 +75,10 @@ public class ConvertList {
 	public List<Integer> toList(int[][] array) {
 		List<Integer> list = new ArrayList<Integer>();
 		for (int[] i : array) {
-			for (int j : i) {
-				list.add(j);
+			if (i != null) {
+				for (int j : i) {
+					list.add(j);
+				}
 			}
 		}
 		return list;
@@ -98,7 +100,9 @@ public class ConvertList {
 			arRows = new int[rows][colls];
 			for (int i = 0; i < arRows.length; i++) {
 				for (int j = 0; j < arRows[i].length; j++) {
-					arRows[i][j] = array[index + j].intValue();
+					if (array[index + j] != null) {
+						arRows[i][j] = array[index + j].intValue();
+					}
 				}
 				index += colls;
 			}
@@ -107,7 +111,7 @@ public class ConvertList {
 			arRows = new int[rows][colls];
 			for (int i = 0; i < arRows.length; i++) {
 				for (int j = 0; j < arRows[i].length; j++) {
-					if ((index + j) < array.length) {
+					if (array[index + j] != null && (index + j) < array.length) {
 						arRows[i][j] = array[index + j].intValue();
 					} else {
 						arRows[i][j] = 0;
@@ -127,8 +131,10 @@ public class ConvertList {
 	public List<Integer> convert(List<int[]> list) {
 		List<Integer> result = new ArrayList<Integer>();
 		for (int[] interim : list) {
-			for (int arr : interim) {
-				result.add(arr);
+			if (interim != null) {
+				for (int arr : interim) {
+					result.add(arr);
+				}
 			}
 		}
 		return result;
