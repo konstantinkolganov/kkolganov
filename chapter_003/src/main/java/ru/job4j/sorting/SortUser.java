@@ -1,8 +1,8 @@
 package ru.job4j.sorting;
 
+import java.util.Comparator;
 import java.util.Set;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.TreeSet;
 /**
 * Класс SortUser.
@@ -15,33 +15,28 @@ public class SortUser {
 /**
 * Класс SortUser.
 */
+	private SortNameLengthComparator snlcomp = new SortNameLengthComparator(); /**Компаратор для сортировки User-ов по имени.*/
+	private Comparator<Users> comparator = new SortNameLengthComparator()
+			.thenComparing(new SortByAllFieldsComparator()); /**Компаратор для сортировки элементов по двум полям.*/
 /**
-* Метод main.
-* @param args args.
+* Метод sortNameLength. Сортировка элементов List<Users> по длине имени.
+* @param list Список Users.
+* @return Отсортированный список.
 */
-	public static void main(String[] args) {
-		// Создать новый список пользователей ArrayList
-		List<Users> list = new ArrayList<Users>();
-		list.add(new Users("Zheka", 28));
-		list.add(new Users("Petr", 33));
-		list.add(new Users("Masha", 22));
-		list.add(new Users("Konstantin", 25));
-		list.add(new Users("Slava", 60));
-		// Вывести List на экран
-		System.out.println("Added entries: ");
-		for (Users user : list) {
-			System.out.println(String.format("%s - %s;", user.getName(), user.getAge()));
-		}
-		System.out.println();
-		// Создать объект SortUser
-		SortUser sortUs = new SortUser();
-		// Конвертируем List в отсортированное множество TreeSet
-		Set<Users> set = sortUs.sort(list);
-		// Вывести Set на экран
-		System.out.println("Modified List: ");
-		for (Users user : set) {
-			System.out.println(String.format("%s - %s;", user.getName(), user.getAge()));
-		}
+	public List<Users> sortNameLength(List<Users> list) {
+		List<Users> userList = list;
+		userList.sort(this.snlcomp);
+		return userList;
+	}
+/**
+* Метод sortByAllFields. Сортировка элементов List<Users> по длине имени и возрасту.
+* @param list Список Users.
+* @return Отсортированный список.
+*/
+	public List<Users> sortByAllFields(List<Users> list) {
+		List<Users> userList = list;
+		userList.sort(this.comparator);
+		return userList;
 	}
 /**
 * Метод sort.
