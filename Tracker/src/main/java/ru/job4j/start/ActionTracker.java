@@ -1,5 +1,7 @@
 package ru.job4j.start;
 
+import java.util.List;
+import java.util.ArrayList;
 /**
 * Класс ActionTracker является оболочкой над массивом операций.
 * Каждая из которых соответствует определенному разделу меню.
@@ -10,23 +12,20 @@ package ru.job4j.start;
 
 public class ActionTracker {
 /**
-* Класс ActionTracker.
+* Class ActionTracker.
 */
-	private UserAction[] actions = new UserAction[6];	/**Массив операций.*/
-	private int position = 0; /**Индекс массива операций.*/
+	private List<UserAction> actions = new ArrayList<UserAction>();	/**Список операций.*/
 /**
 * Метод getActions.
 * Возвращает массив операций меню.
 * @return useraction Массив.
 */
-	public UserAction[] getActions() {
-		UserAction[] useraction = null;
-		if (this.actions != null) {
-			useraction = new UserAction[actions.length];
-			int index = 0;
-			for (UserAction actions : this.actions) {
-				if (actions != null) {
-					useraction[index++] = actions;
+	public List<UserAction> getActions() {
+		List<UserAction> useraction = new ArrayList<UserAction>();
+		if (this.actions.size() != 0) {
+			for (UserAction action : this.actions) {
+				if (action != null) {
+					useraction.add(action);
 				}
 			}
 		}
@@ -51,7 +50,7 @@ public class ActionTracker {
 * @param baseaction BaseAction.
 */
 	public void addAction(BaseAction baseaction) {
-		this.actions[this.position++] = baseaction;
+		this.actions.add(baseaction);
 	}
 /**
 * Метод createItem().
@@ -90,13 +89,13 @@ public class ActionTracker {
 * @param input Input.
 */
 			public void execute(Tracker tracker, Input input) {
-				if (tracker.findAll() == null) {
+				if (tracker.findAll().size() == 0) {
 				System.out.print("\r\nYou have not created none Items.\r\n");
 				System.out.print("\r\n");
 				} else {
-					Item[] allReturn = tracker.findAll();
+					List<Item> list = tracker.findAll();
 					System.out.print("\r\nList items:\r\n");
-					for (Item item: allReturn) {
+					for (Item item : list) {
 						System.out.println("Name of item: " + item.getName());
 						System.out.println("Description: " + item.getDesc());
 						System.out.println("Create: " + item.getCreate());
@@ -120,7 +119,7 @@ public class ActionTracker {
 * @param input Input.
 */
 			public void execute(Tracker tracker, Input input) {
-				if (tracker.findAll() == null) {
+				if (tracker.findAll().size() == 0) {
 				System.out.print("\r\nYou have not created none Items.\r\n");
 				System.out.print("\r\n");
 				} else {
@@ -167,7 +166,7 @@ public class ActionTracker {
 * @param input Input.
 */
 			public void execute(Tracker tracker, Input input) {
-				if (tracker.findAll() == null) {
+				if (tracker.findAll().size() == 0) {
 				System.out.print("\r\nYou have not created none Items.\r\n");
 				System.out.print("\r\n");
 				} else {
@@ -204,7 +203,7 @@ public class ActionTracker {
 * @param input Input.
 */
 			public void execute(Tracker tracker, Input input) {
-				if (tracker.findAll() == null) {
+				if (tracker.findAll().size() == 0) {
 				System.out.print("\r\nYou have not created none Items.\r\n");
 				System.out.print("\r\n");
 				} else {
@@ -240,18 +239,18 @@ public class ActionTracker {
 * @param input Input.
 */
 			public void execute(Tracker tracker, Input input) {
-				if (tracker.findAll() == null) {
+				if (tracker.findAll().size() == 0) {
 				System.out.print("\r\nYou have not created none Items.\r\n");
 				System.out.print("\r\n");
 				} else {
 					String name = input.ask("Please, enter the name Items: ");
-					Item[] arrName = tracker.findByName(name);
-					while (arrName == null) {
+					List<Item> list = tracker.findByName(name);
+					while (list.size() == 0) {
 						name = input.ask("\r\nSORRY!\r\nItems with this name do not exist.\r\nPlease, enter the Name again or \"esc\" for escape: ");
-						arrName = tracker.findByName(name);
+						list = tracker.findByName(name);
 					}
 					System.out.println();
-					for (Item item: arrName) {
+					for (Item item : list) {
 						System.out.println("Name: " + item.getName());
 						System.out.println("Description: " + item.getDesc());
 						System.out.println("Create: " + item.getCreate());

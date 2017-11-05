@@ -1,5 +1,9 @@
 package ru.job4j.start;
 
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.List;
+import java.util.ArrayList;
 import org.junit.Test;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -28,7 +32,7 @@ public class TrackerTest {
 		// Вносим нашу заявку в массив заявок
 		tracker.add(item);
 		// Сравниваем результат с ожидаемым значением
-		assertThat(tracker.findAll()[0], is(item));
+		assertThat(tracker.findAll().get(0), is(item));
 	}
 /**
 * Тест метода public void update(Item item).
@@ -76,17 +80,18 @@ public class TrackerTest {
 		tracker.add(item);
 		tracker.add(item);
 		tracker.add(item);
-		// Создаем массив класса Item[3] и инициализируем его объектом item
-		Item[] result = new Item[3];
-		result[0] = item;
-		result[1] = item;
-		result[2] = item;
+		// Создаем список List<Item> и инициализируем его теми же значениями
+		List<Item> result = new ArrayList<Item>();
+		result.add(item);
+		result.add(item);
+		result.add(item);
 		// Сравниваем результат с ожидаемым значением
 		assertThat(tracker.findByName("Test1"), is(result));
 	}
 /**
-* Тест метода public Item[] findAll().
+* Тест метода public List<Item> findAll().
 * Получение списка всех заявок.
+* Множество TreeSet для сортировки элементов.
 */
 	@Test
 	public void whenSortOutArrayThenReturnCopyArrayLessNull() {
@@ -103,17 +108,20 @@ public class TrackerTest {
 		tracker.add(item4);
 		// Удалим третью заявку
 		tracker.delete(item3);
-		// Создаем массив класса Item, который будет хранить эти заявки
-		Item[] result = new Item[100];
-		result[0] = item1;
-		result[1] = item2;
-		result[2] = item4;
+		// Создаем множество TreeSet<Item> из элементов листа в Tracker-е
+		Set<Item> result = new TreeSet<Item>(tracker.findAll());
+		// Создаем множество TreeSet<Item> с такими же элементами, как в листе Tracker
+		Set<Item> expected = new TreeSet<Item>();
+		expected.add(item1);
+		expected.add(item2);
+		expected.add(item4);
 		// Сравниваем результат с ожидаемым значением
-		assertThat(tracker.findAll(), is(result));
+		assertThat(result, is(expected));
 	}
 /**
 * Тест метода public void delete(Item item).
 * Удаление заявки.
+* Множество TreeSet для сортировки элементов.
 */
 	@Test
 	public void whenFindByIdThenAssignNull() {
@@ -128,11 +136,13 @@ public class TrackerTest {
 		tracker.add(item3);
 		// Удаляем вторую заявку
 		tracker.delete(item2);
-		// Создаем массив класса Item, аналoгичный items[]
-		Item[] result = new Item[100];
-		result[0] = item1;
-		result[1] = item3;
+		// Создаем множество TreeSet<Item> из элементов листа в Tracker-е
+		Set<Item> result = new TreeSet<Item>(tracker.findAll());
+		// Создаем множество TreeSet<Item> с такими же элементами, как в листе Tracker
+		Set<Item> expected = new TreeSet<Item>();
+		expected.add(item1);
+		expected.add(item3);
 		// Сравниваем результат с ожидаемым значением
-		assertThat(tracker.findAll(), is(result));
+		assertThat(result, is(expected));
 	}
 }

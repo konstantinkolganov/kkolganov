@@ -1,20 +1,23 @@
 package ru.job4j.start;
 
+import java.util.Set;
 import java.util.Random;
-import java.util.Arrays;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
 * Класс Tracker.
 * @author Konstantin Kolganov (kkolganov.92@gmail.com)
 * @since 16.09.2017
-* @version 1.0
+* @version 2.0
 */
 public class Tracker {
 /**
 * Класс Tracker.
 */
-	private Item[] items = new Item[100]; /** Список заявок. */
-	private int position; /** Счетчик массива items[]. */
+	private Map<String, Item> items = new HashMap<String, Item>(); /** Список заявок. */
 	public static final Random RN = new Random(); /** Random. */
 /**
 * Метод add. Добавление заявки.
@@ -23,7 +26,7 @@ public class Tracker {
 */
 	public Item add(Item item) {
 		item.setId(this.generateId());
-		this.items[this.position++] = item;
+		this.items.put(item.getId(), item);
 		return item;
 	}
 /**
@@ -31,11 +34,7 @@ public class Tracker {
 * @param item Ссылку на заявку.
 */
 	public void update(Item item) {
-		for (int index = 0; index != this.position; index++) {
-			if (item != null && this.items[index].getId().equals(item.getId())) {
-				this.items[index] = item;
-			}
-		}
+		this.items.put(item.getId(), item);
 	}
 /**
 * Метод findById. Поиск заявки по id.
@@ -43,55 +42,47 @@ public class Tracker {
 * @return Item Заявку с подходящим номером id.
 */
 	public Item findById(String id) {
-		Item result = null;
-		for (Item item : items) {
-			if (item != null && item.getId().equals(id)) {
-			result = item;
-			break;
-			}
-		}
-		return result;
+		return this.items.get(id);
 	}
 /**
 * Метод findByName. Получение списка по имени.
 * @param key Имя заявки.
-* @return Массив заявок с совпадающими именами.
+* @return Список List заявок.
 */
-	public Item[] findByName(String key) {
-		Item[] result = new Item[this.position];
-		int index = 0;
-		for (Item item : items) {
-			if (item != null && item.getName().equals(key)) {
-				result[index++] = item;
+	public List<Item> findByName(String key) {
+		List<Item> list = new ArrayList<Item>();
+		if (!this.items.isEmpty()) {
+			Set<Map.Entry<String, Item>> set = this.items.entrySet();
+			for (Map.Entry<String, Item> setItems : set) {
+				if (setItems != null && setItems.getValue().getName().equals(key)) {
+					list.add(setItems.getValue());
+				}
 			}
 		}
-		return Arrays.copyOf(result, (this.position - (this.position - index)));
+		return list;
 	}
 /**
 * Метод findAll. Получение списка всех заявок.
-* @return Копию массива this.items без null-элементов.
+* @return Список заявок без null.
 */
-	public Item[] findAll() {
-		Item[] result = new Item[this.items.length];
-		int index = 0;
-		for (Item item : items) {
-			if (item != null) {
-				result[index++] = item;
+	public List<Item> findAll() {
+		List<Item> list = new ArrayList<Item>();
+		if (!this.items.isEmpty()) {
+			Set<Map.Entry<String, Item>> set = this.items.entrySet();
+			for (Map.Entry<String, Item> setItems : set) {
+				if (setItems != null) {
+					list.add(setItems.getValue());
+				}
 			}
 		}
-		return result;
+		return list;
 	}
 /**
 * Метод delete. Удаление заявки.
 * @param item Ссылку на объект заявки.
 */
 	public void delete(Item item) {
-		for (int index = 0; index < this.position; index++) {
-			if (item != null && items[index].getId().equals(item.getId())) {
-				items[index] = null;
-				break;
-			}
-		}
+		this.items.remove(item.getId());
 	}
 /**
 * Метод generateId. Генератор номера id.

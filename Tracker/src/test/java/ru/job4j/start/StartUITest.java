@@ -32,7 +32,7 @@ public class StartUITest {
 		// Запуск программы на выполнение
 		start.init();
 		// Проверяем, что нулевой элемент массива содержит имя, введенное при эмуляции
-		assertThat(tracker.findAll()[0].getName(), is("test name"));
+		assertThat(tracker.findAll().get(0).getName(), is("test name"));
 	}
 /**
 * Напрямую добавляем заявку в трекер.
