@@ -32,8 +32,13 @@ public class ConvertListTest {
 		listOfIntArray.add(new int[]{9, 10, 11, 12, 13});
 		listOfIntArray.add(new int[]{14, 15, 16, 17, 18, 19, 20});
 		// Конвертируем массив в один список Integer
-		List<Integer> listOfInteger = convertList.convert(listOfIntArray);
-		// Размер листа должен быть 21 элемент
-		assertThat(listOfInteger.size(), is(21));
+		List<Integer> result = convertList.convert(listOfIntArray);
+		// Создадим List<Intger> с такими же элементами, как у listOfInteger
+		List<Integer> expected = new ArrayList<Integer>();
+		for (int i = 0; i < result.size(); i++) {
+			expected.add(i);
+		}
+		// Сравним результат с ожидаемым значением
+		assertThat(result, is(expected));
 	}
 }
