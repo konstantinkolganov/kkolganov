@@ -22,25 +22,42 @@ public class User {
 		this.name = name;
 		this.pasport = pasport;
 	}
-
-//* Метод equals. Сравнивает текущий объект с заданным obj.
-//* @param user Объект.
-//* @return true, если объекты равны, а иначе - false.
-	//public boolean equals(User user) {
-		//boolean result = false;
-		//if (user != null && this == user) {
-			//result = true;
-		//}
-		//if (this.name == user.getName() && this.pasport == user.getPasport()) {
-			//result = true;
-		//}
-		//return result;
-	//}
-//* Метод hashCode.
-//* @return Хэш-код текущего объекта.
-	//public int hashCode() {
-		//return this.hashCode();
-	//}
+/**
+* Метод equals. Сравнивает текущий объект с заданным obj.
+* @param obj Объект.
+* @return true, если объекты равны, а иначе - false.
+*/
+	public boolean equals(Object obj) {
+		boolean result = true;
+		if (this == obj) {
+			result = true;
+		}
+		if (obj == null) {
+			result = false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			result = false;
+		}
+		User other = (User) obj;
+		if (this.name != other.name) {
+			result = false;
+		}
+		if (this.pasport != other.pasport) {
+			result = false;
+		}
+		return result;
+	}
+/**
+* Метод hashCode.
+* @return Хэш-код текущего объекта.
+*/
+	public int hashCode() {
+		final int prime = 30;
+		int result = 1;
+		result = prime * result + this.name.codePointAt(0);
+		result = prime * result + this.pasport.getUnicodeName();
+		return result;
+	}
 /**
 * Метод getName.
 * @return Имя пользователя.
