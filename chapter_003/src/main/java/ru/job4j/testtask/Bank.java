@@ -33,9 +33,8 @@ public class Bank {
 * @param user Пользователь.
 */
 	public void deleteUser(User user) {
-		if (this.map.get(user) != null) {
-			this.map.remove(user);
-		}
+		List<Account> list = this.map.get(user);
+		this.map.remove(user, list);
 	}
 /**
 * Метод addAccountToUser. Добавляет пользователю один новый счет.
@@ -43,9 +42,11 @@ public class Bank {
 * @param account Счет.
 */
 	public void addAccountToUser(User user, Account account) {
-		if (user != null && account != null && this.map.get(user) != null) {
+		if (user != null && account != null) {
 			List<Account> list = this.map.get(user);
-			list.add(account);
+			if (list != null) {
+				list.add(account);
+			}
 		}
 	}
 /**
@@ -54,8 +55,8 @@ public class Bank {
 * @param account Счет.
 */
 	public void deleteAccountFromUser(User user, Account account) {
-		if (user != null && account != null && this.map.get(user) != null) {
-			List<Account> list = this.map.get(user);
+		List<Account> list = this.map.get(user);
+		if (list != null) {
 			list.remove(account);
 		}
 	}
@@ -65,10 +66,7 @@ public class Bank {
 * @return Список счетов.
 */
 	public List<Account> getUserAccount(User user) {
-		List<Account> list = null;
-		if (user != null) {
-			list = this.map.get(user);
-		}
+		List<Account> list = this.map.get(user);
 		return list;
 	}
 /**
@@ -82,29 +80,13 @@ public class Bank {
 */
 	public boolean transferMoney(User srcUser, Account srcAccount, User dstUser, Account dstAccount, double amount) {
 		boolean transfer = false;
-		List<Account> list1;
-		List<Account> list2;
-		Account account1;
-		Account account2;
-		if (srcUser != null && dstUser != null && srcAccount != null && dstAccount != null && amount > 0) {
-			if (this.map.containsKey(srcUser) && this.map.containsKey(dstUser)) {
-				list1 = this.map.get(srcUser);
-				list2 = this.map.get(dstUser);
-				int indexSrc = 0;
-				int indexDst = 0;
-				if (list1 != null && list2 != null) {
-					indexSrc = list1.indexOf(srcAccount);
-					indexDst = list2.indexOf(dstAccount);
-				}
-				if (indexSrc >= 0 && indexDst >= 0) {
-					account1 = list1.get(indexSrc);
-					account2 = list2.get(indexDst);
-					if (account1.getValue() >= amount) {
-						account1.setValue(account1.getValue() - amount);
-						account2.setValue(account2.getValue() + amount);
-						transfer = true;
-					}
-				}
+		List<Account> list1 = this.map.get(srcUser);
+		List<Account> list2 = this.map.get(dstUser);
+		if (list1 != null && list2 != null && list1.contains(srcAccount) && list2.contains(dstAccount)) {
+			if (srcAccount.getValue() >= amount) {
+				srcAccount.setValue(srcAccount.getValue() - amount);
+				dstAccount.setValue(dstAccount.getValue() + amount);
+				transfer = true;
 			}
 		}
 		return transfer;
